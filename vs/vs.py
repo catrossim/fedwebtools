@@ -97,6 +97,8 @@ if __name__ == '__main__':
     if len(sys.argv) != 3:
         print 'usage ./vs.py [src] [dest]'
         sys.exit()
+    srcDir = sys.argv[1]
+    destDir = sys.argv[2]
     # 读入垂直领域与资源库关系
     readetovMapping(normpath('ev-mapping.txt'))
     # processNum = 4
@@ -110,8 +112,7 @@ if __name__ == '__main__':
     #     multiHandleDir(vList)
     #     pass
     # srcDir: 所有资源库所属的上一级文件夹
-    srcDir = normpath('../FW14-sample-search')
-    destDir = 'result'
+
     if not os.path.exists(srcDir):
         print 'src is not exists: %s' %srcDir
         sys.exit()
