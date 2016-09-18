@@ -53,7 +53,7 @@ def _handleFile(path):
         description = None
         if snippet.description and snippet.description.string:
             description = snippet.description.string
-        if description is not None and snippet.title and snippet.title.string:
+        if description is None and snippet.title and snippet.title.string:
             title = snippet.title.string
 
         tokens = _tokenizeAll(title, description)
@@ -93,7 +93,7 @@ def saveResult(destDir, fileName, content):
 def multiHandleDir(dirList):
     global srcDir
     global destDir
-    print srcDir, destDir
+    # print srcDir, destDir
     threads = []
     for v in dirList:
         for e in vtoe.get(v):
@@ -104,7 +104,7 @@ def multiHandleFile(path, e, v, target):
     eSrc = os.path.join(path, e, e+'.xml')
     # print eSrc
     if os.path.exists(eSrc):
-        logging.info('Ready to parse %s' % eSrc)
+        logging.info('%s is ready' % eSrc)
         result = _handleFile(eSrc)
         logging.info('Finish parsing %s' % eSrc)
         saveResult(os.path.join(destDir, v), e, '\n'.join(result))
@@ -114,6 +114,8 @@ class FileNotFoundError(Exception):
 
 if __name__ == '__main__':
 
+    global srcDir
+    global destDir
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
     logging.root.setLevel(level=logging.INFO)
     logging.info("running %s" % ' '.join(sys.argv))
@@ -122,8 +124,7 @@ if __name__ == '__main__':
         sys.exit()
     srcDir = sys.argv[1]
     destDir = sys.argv[2]
-    global srcDir
-    global destDir
+
     # srcDir = normpath('../../FW14-sample-search')
     # destDir = normpath('result')
     # 读入垂直领域与资源库关系
@@ -139,7 +140,6 @@ if __name__ == '__main__':
             logging.error('Error in mkdir: %s' % destDir)
     # 处理资源库文件
     # handleSrc(normpath(srcDir),destDir)
-
 
     from multiprocessing import Process
     processNum = 8
