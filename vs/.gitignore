@@ -1,3 +1,5 @@
 stop_words.utf8
 StopWordHandler.py
 *.pyc
+*.xml
+result/*

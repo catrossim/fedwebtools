@@ -3,12 +3,16 @@
 import logging
 import os.path,sys
 from bs4 import BeautifulSoup, SoupStrainer
+import gevent
+from gevent import monkey
+monkey.patch_all()
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 vtoe = {}
-
+srcDir = None
+destSrc = None
 def readetovMapping(path):
     with open(path, 'r') as f:
         for line in f.readlines():
@@ -44,13 +48,16 @@ def _handleFile(path):
     soup = BeautifulSoup(open(path), 'xml', parse_only=SoupStrainer('snippet'))
     # print soup.prettify().encode('utf-8')
     results = []
-    for snippet in soup.select('snippet'):
-        # print snippet.select('title')
-        title = snippet.title.string.strip()
-        description = snippet.description.string.strip()
-        # print '%s\n%s'%(title, description)
+    for snippet in soup:
+        title = None
+        description = None
+        if snippet.description and snippet.description.string:
+            description = snippet.description.string
+        if description is not None and snippet.title and snippet.title.string:
+            title = snippet.title.string
+
         tokens = _tokenizeAll(title, description)
-        results.extend(tokens)
+        results.append(' '.join(tokens))
     return results
 
 def _tokenizeAll(*posts):
@@ -84,7 +91,23 @@ def saveResult(destDir, fileName, content):
         f.write(content)
 
 def multiHandleDir(dirList):
-    pass
+    global srcDir
+    global destDir
+    print srcDir, destDir
+    threads = []
+    for v in dirList:
+        for e in vtoe.get(v):
+            threads.append(gevent.spawn(multiHandleFile, srcDir, e, v, destDir))
+    gevent.joinall(threads)
+
+def multiHandleFile(path, e, v, target):
+    eSrc = os.path.join(path, e, e+'.xml')
+    # print eSrc
+    if os.path.exists(eSrc):
+        logging.info('Ready to parse %s' % eSrc)
+        result = _handleFile(eSrc)
+        logging.info('Finish parsing %s' % eSrc)
+        saveResult(os.path.join(destDir, v), e, '\n'.join(result))
 
 class FileNotFoundError(Exception):
     pass
@@ -99,19 +122,12 @@ if __name__ == '__main__':
         sys.exit()
     srcDir = sys.argv[1]
     destDir = sys.argv[2]
+    global srcDir
+    global destDir
+    # srcDir = normpath('../../FW14-sample-search')
+    # destDir = normpath('result')
     # 读入垂直领域与资源库关系
     readetovMapping(normpath('ev-mapping.txt'))
-    # processNum = 4
-    # dirs = [[] for i in xrange(processNum)]
-    # i = 0
-    # keys = [x for x in vtoe.iterkeys()]
-    # while i<processNum:
-    #     dirs[i] = [x for x in keys if keys.index(x)%processNum==i]
-    #     i = i + 1
-    # for vList in dirs:
-    #     multiHandleDir(vList)
-    #     pass
-    # srcDir: 所有资源库所属的上一级文件夹
 
     if not os.path.exists(srcDir):
         print 'src is not exists: %s' %srcDir
@@ -122,4 +138,16 @@ if __name__ == '__main__':
         except Exception:
             logging.error('Error in mkdir: %s' % destDir)
     # 处理资源库文件
-    handleSrc(normpath(srcDir),destDir)
+    # handleSrc(normpath(srcDir),destDir)
+
+
+    from multiprocessing import Process
+    processNum = 8
+    dirs = [[] for i in xrange(processNum)]
+    i = 0
+    keys = [x for x in vtoe.iterkeys()]
+    while i<processNum:
+        dirs[i] = [x for x in keys if keys.index(x)%processNum==i]
+        p = Process(target=multiHandleDir,args=(dirs[i],))
+        p.start()
+        i = i + 1
