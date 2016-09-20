@@ -119,7 +119,7 @@ if __name__ == '__main__':
     logging.root.setLevel(level=logging.INFO)
     logging.info("running %s" % ' '.join(sys.argv))
     if len(sys.argv) != 3:
-        print 'usage ./vs.py [src] [dest]'
+        print 'usage ./process_snippets.py [src] [dest]'
         sys.exit()
     srcDir = sys.argv[1]
     destDir = sys.argv[2]

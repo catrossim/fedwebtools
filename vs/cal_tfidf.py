@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 from sklearn.feature_extraction.text import TfidfVectorizer
-import os
+import os, sys
 import logging
 import codecs
 
@@ -52,16 +52,20 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
     logging.root.setLevel(level=logging.INFO)
 
-    target = 'vtext'
+    if len(sys.argv) != 3:
+        print 'usage ./cal_tfidf.py [src] [dest]'
+        sys.exit()
+
+    target = sys.argv[1]
+    dest = sys.argv[2]
+
     logging.info('Ready to read sources from %s' % target)
     corpus, s = readsrc(target)
     if not corpus:
         logging.error('Can not find corpus')
-        import sys
         sys.exit(1)
     logging.info('Source reading complete!')
 
-    dest = 'result'
 
     v = TfidfVectorizer(tokenizer=tokenize)
     logging.info('Begin to calculate tf-idf...')
