@@ -81,7 +81,7 @@ def tokenize(post):
     # 词干提取
     stemmer = stem.SnowballStemmer('english')
     stem_tokens = [stemmer.stem(x) for x in tokens if not len(x)<2 and not len(x)>15 \
-    not stopwords.exist(x) and not x.isdigit()]
+    and not stopwords.exist(x) and not x.isdigit()]
     return stem_tokens
 
 def saveResult(destDir, fileName, content):
