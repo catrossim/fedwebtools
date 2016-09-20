@@ -118,14 +118,14 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
     logging.root.setLevel(level=logging.INFO)
     logging.info("running %s" % ' '.join(sys.argv))
-    # if len(sys.argv) != 3:
-    #     print 'usage ./vs.py [src] [dest]'
-    #     sys.exit()
-    # srcDir = sys.argv[1]
-    # destDir = sys.argv[2]
+    if len(sys.argv) != 3:
+        print 'usage ./vs.py [src] [dest]'
+        sys.exit()
+    srcDir = sys.argv[1]
+    destDir = sys.argv[2]
 
-    srcDir = normpath('../../FW14-sample-search')
-    destDir = normpath('result')
+    # srcDir = normpath('../../FW14-sample-search')
+    # destDir = normpath('result')
     # 读入垂直领域与资源库关系
     readetovMapping(normpath('ev-mapping.txt'))
 
