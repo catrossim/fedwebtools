@@ -5,18 +5,25 @@ import os
 import logging
 logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
 logging.root.setLevel(level=logging.INFO)
+import codecs
 
 def tokenize(post):
     from nltk import word_tokenize
     return word_tokenize(post)
 
-def get_sorted_index(arr):
-    sorted = [x for x in xrange(len(arr))]
-    for i in xrange(len(arr)-1):
-        j = len(arr)-1
+def get_sorted_index(arr,eps=1e-4):
+    new_arr = []
+    sorted = []
+    for a in xrange(len(arr)):
+        if arr[a]>eps:
+            new_arr.append(arr[a])
+            sorted.append(a)
+
+    for i in xrange(len(new_arr)-1):
+        j = len(new_arr)-1
         while j>i:
-            if arr[j]>arr[i]:
-                swap(arr,i,j)
+            if new_arr[j]>new_arr[i]:
+                swap(new_arr,i,j)
                 swap(sorted,i,j)
             j = j-1
     return sorted
@@ -45,7 +52,7 @@ logging.info('Source reading complete!')
 
 def save_file(path, content):
     logging.info('saving content to %s' % path)
-    with open(path, 'w') as f:
+    with codecs.open(path, 'w', 'utf-8') as f:
         f.write(content)
     logging.info('file %s save' % path)
 

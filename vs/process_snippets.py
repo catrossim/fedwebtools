@@ -67,8 +67,9 @@ def _tokenizeAll(*posts):
 
 def tokenize(post):
     from nltk import word_tokenize, stem
-    from nltk.corpus import stopwords
     import string
+    from StopWordHandler import StopWordHandler
+    stopwords = StopWordHandler('stop_words.utf8')
     if isinstance(post, unicode):
         post = str(post)
     # 转化为小写
@@ -79,7 +80,7 @@ def tokenize(post):
     tokens = word_tokenize(no_punctuation)
     # 词干提取
     stemmer = stem.SnowballStemmer('english')
-    stem_tokens = [stemmer.stem(x) for x in tokens if x not in stopwords.words('english')]
+    stem_tokens = [stemmer.stem(x) for x in tokens if not stopwords.exist(x) and not x.isdigit()]
     return stem_tokens
 
 def saveResult(destDir, fileName, content):
@@ -117,14 +118,14 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
     logging.root.setLevel(level=logging.INFO)
     logging.info("running %s" % ' '.join(sys.argv))
-    if len(sys.argv) != 3:
-        print 'usage ./vs.py [src] [dest]'
-        sys.exit()
-    srcDir = sys.argv[1]
-    destDir = sys.argv[2]
+    # if len(sys.argv) != 3:
+    #     print 'usage ./vs.py [src] [dest]'
+    #     sys.exit()
+    # srcDir = sys.argv[1]
+    # destDir = sys.argv[2]
 
-    # srcDir = normpath('../../FW14-sample-search')
-    # destDir = normpath('result')
+    srcDir = normpath('../../FW14-sample-search')
+    destDir = normpath('result')
     # 读入垂直领域与资源库关系
     readetovMapping(normpath('ev-mapping.txt'))
 
