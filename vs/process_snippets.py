@@ -11,8 +11,6 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 vtoe = {}
-srcDir = None
-destSrc = None
 def readetovMapping(path):
     with open(path, 'r') as f:
         for line in f.readlines():
