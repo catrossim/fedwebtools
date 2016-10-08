@@ -3,7 +3,7 @@ class WordGetter(object):
 
     def __init__(self, path):
         logging.info('Loading model from %s' % path)
-        self.model = _load_model(path, binary)
+        self.model = self._load_model(path, binary)
         logging.info('Model is loaded.')
 
     def _load_model(path, binary):
