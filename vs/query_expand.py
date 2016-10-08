@@ -31,5 +31,5 @@ if __name__ == '__main__':
     with open(query_path, 'r') as f:
         query = f.readline().split('\t')[1]
         words = preprocess_query(query)
-        result = '\n'.join([' '.join(x) for x in get_similar_words()])
+        result = '\n'.join([' '.join(x) for x in get_similar_words(words)])
         save('_'.join(query.split(' ')), content)
