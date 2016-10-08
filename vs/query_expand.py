@@ -19,7 +19,8 @@ def get_similar_words(words):
     return wordgetter.most_similar(words)
 
 def save(path,content):
-    with open(path,'w') as f:
+    import codecs
+    with codecs.open(path,'w','utf-8') as f:
         f.write(content)
 
 if __name__ == '__main__':
