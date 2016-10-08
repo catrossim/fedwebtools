@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from WordGetter import WordGetter
-import sys,os
+import sys,os,logging
 from StopWordHandler import StopWordHandler
 stopwords = None
 wordgetter=None
@@ -35,8 +35,13 @@ if __name__ == '__main__':
     with open(query_path, 'r') as f:
         for line in f.readlines():
             query = line.split('\t')[1]
+            num = line.split('\t')[0]
             words = preprocess_query(query)
-            simwords = get_similar_words(words)
+            try:
+                simwords = get_similar_words(words)
+            except KeyError, arg:
+                logging.error('KeyError: %s %s' %(arg, num))
+                continue
             r = zip([a[0] for a in simwords],map(str,[a[1] for a in simwords]))
             result = '\n'.join([' '.join(x) for x in r])
-            save(os.path.join(dest_dir,line.split('\t')[0]), result)
+            save(os.path.join(dest_dir,num), result)
