@@ -12,7 +12,7 @@ def init(path):
     stopwords = StopWordHandler('stop_words.utf8')
 
 def preprocess_query(query):
-    words = [x.lower() for x in query.split(' ') if not stopwords.exist(x.lower())]
+    words = [x.lower().strip() for x in query.split(' ') if not stopwords.exist(x.lower())]
     return words
 
 def get_similar_words(words):
@@ -34,5 +34,7 @@ if __name__ == '__main__':
         for line in f.readlines():
             query = line.split('\t')[1]
             words = preprocess_query(query)
-            result = '\n'.join([' '.join(x) for x in get_similar_words(words)])
+            simwords = get_similar_words(words)]
+            r = zip([a[0] for a in simwords],map(str,[a[1] for a in simwords]))
+            result = '\n'.join([' '.join(x) for x in r)
             save(os.path.join(dest_dir,query[0]), result)
