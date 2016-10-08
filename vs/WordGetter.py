@@ -3,10 +3,10 @@ class WordGetter(object):
 
     def __init__(self, path):
         logging.info('Loading model from %s' % path)
-        self.model = self._load_model(path, binary)
+        self.model = self._load_model(path)
         logging.info('Model is loaded.')
 
-    def _load_model(self, path, binary):
+    def _load_model(self, path):
         return gensim.models.Word2Vec.load(path)
 
     def most_similar(self, words, topn=10):

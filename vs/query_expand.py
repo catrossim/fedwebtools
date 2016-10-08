@@ -2,13 +2,13 @@
 from WordGetter import WordGetter
 import sys,os
 from StopWordHandler import StopWordHandler
-
 stopwords = None
-
 wordgetter=None
 
 def init(path):
+    global wordgetter
     wordgetter = WordGetter(path)
+    global stopwords
     stopwords = StopWordHandler('stop_words.utf8')
 
 def preprocess_query(query):
@@ -31,7 +31,8 @@ if __name__ == '__main__':
     dest_dir = sys.argv[3]
     init(path)
     with open(query_path, 'r') as f:
-        query = f.readline().split('\t')[1]
-        words = preprocess_query(query)
-        result = '\n'.join([' '.join(x) for x in get_similar_words(words)])
-        save(os.path.join(dest_dir,query[0]), content)
+        for line in f.readlines():
+            query = line.split('\t')[1]
+            words = preprocess_query(query)
+            result = '\n'.join([' '.join(x) for x in get_similar_words(words)])
+            save(os.path.join(dest_dir,query[0]), result)
