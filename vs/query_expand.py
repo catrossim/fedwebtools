@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 from WordGetter import WordGetter
-import sys
+import sys,os
 from StopWordHandler import StopWordHandler
 
-stopwords = StopWordHandler('stop_words.utf8')
+stopwords = None
 
 wordgetter=None
 
 def init(path):
     wordgetter = WordGetter(path)
+    stopwords = StopWordHandler('stop_words.utf8')
 
 def preprocess_query(query):
     words = [x.lower() for x in query.split(' ') if not stopwords.exist(x.lower())]
@@ -27,9 +28,10 @@ if __name__ == '__main__':
         sys.exit(1)
     path = sys.argv[1]
     query_path = sys.argv[2]
+    dest_dir = sys.argv[3]
     init(path)
     with open(query_path, 'r') as f:
         query = f.readline().split('\t')[1]
         words = preprocess_query(query)
         result = '\n'.join([' '.join(x) for x in get_similar_words(words)])
-        save('_'.join(query.split(' ')), content)
+        save(os.path.join(dest_dir,query[0]), content)
