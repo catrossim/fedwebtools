@@ -47,7 +47,7 @@ if __name__ == '__main__':
                     loop = False
                 except KeyError, arg:
                     logging.error('KeyError: %s %s' %(arg, num))
-                    words.remove(arg.__str__.split('\'')[1])
+                    words.remove(str(arg.__str__).split('\'')[1])
             r = zip([a[0] for a in simwords],map(str,[a[1] for a in simwords]))
             result = '\n'.join([' '.join(x) for x in r])
             save(os.path.join(dest_dir,num), result)
