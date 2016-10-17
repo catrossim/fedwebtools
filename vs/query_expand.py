@@ -2,6 +2,7 @@
 from WordGetter import WordGetter
 import sys,os,logging
 from StopWordHandler import StopWordHandler
+from nltk import stem
 stopwords = None
 wordgetter=None
 
@@ -12,8 +13,9 @@ def init(path):
     stopwords = StopWordHandler('stop_words.utf8')
 
 def preprocess_query(query):
+    stemmer = stem.SnowballStemmer('english')
     query = query.replace('-',' ').strip()
-    words = [x.lower() for x in query.split(' ') \
+    words = [stemmer.stem(x.lower()) for x in query.split(' ') \
         if not stopwords.exist(x.lower()) and not x.isdigit()]
     return words
 
