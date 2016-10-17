@@ -40,14 +40,11 @@ if __name__ == '__main__':
             query = line.split('\t')[1]
             num = line.split('\t')[0]
             words = preprocess_query(query)
-            loop = True
-            while loop:
-                try:
-                    simwords = get_similar_words(words)
-                    loop = False
-                except KeyError, arg:
-                    logging.error('KeyError: %s %s' %(arg, num))
-                    words.remove(str(arg.__str__).split('\'')[1])
+            try:
+                simwords = get_similar_words(words)
+            except KeyError, arg:
+                logging.error('KeyError: %s %s' %(arg, num))
+                continue
             r = zip([a[0] for a in simwords],map(str,[a[1] for a in simwords]))
             result = '\n'.join([' '.join(x) for x in r])
             save(os.path.join(dest_dir,num), result)
