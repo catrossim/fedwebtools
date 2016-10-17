@@ -12,8 +12,9 @@ def init(path):
     stopwords = StopWordHandler('stop_words.utf8')
 
 def preprocess_query(query):
-    query = query.replace('-',' ')
-    words = [x.lower().strip() for x in query.split(' ') if not stopwords.exist(x.lower())]
+    query = query.replace('-',' ').strip()
+    words = [x.lower() for x in query.split(' ') \
+        if not stopwords.exist(x.lower()) and not x.isdigit()]
     return words
 
 def get_similar_words(words):
