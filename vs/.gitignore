@@ -2,3 +2,5 @@
 *.xml
 result/*
 *_test.py
+*.text.words
+dir_test
