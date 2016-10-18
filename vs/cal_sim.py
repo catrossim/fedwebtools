@@ -66,4 +66,4 @@ if __name__ == '__main__':
     scount = 1000
     if len(sys.argv)==2:
         scount = sys.argv[1]
-    begin(scount)
+    begin(scount=scount)
