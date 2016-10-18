@@ -54,7 +54,7 @@ def begin(q_dir='expqs', v_dir='tfidfs', dest='rsim', eqc=10):
                     break
                 line = f.readline()
         r = getVScore(exp_words)
-        sorted_r = sorted(r.items(),key=itemgetter(1))
+        sorted_r = sorted(r.items(),key=itemgetter(1),reverse=True)
         content = zip([a[0] for a in sorted_r],map(str, [a[1] for a in sorted_r]))
         with codecs.open(os.path.join(dest,q_file),'w','utf-8') as f:
             f.write('\n'.join([' '.join(x) for x in content]))
