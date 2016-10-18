@@ -5,7 +5,7 @@ import os, sys
 import logging
 from operator import itemgetter
 vmap = {}
-def readvToDict(path):
+def readvToDict(path, scount):
     d = {}
     with codecs.open(path, 'r', 'utf-8') as f:
         line = f.readline()
@@ -14,7 +14,7 @@ def readvToDict(path):
             line = line.split(' ')
             word, prob = line
             d[word] = dict(rank=i, prob=prob)
-            if i>=1000:
+            if i>=scount:
                 break
             i += 1
             line = f.readline()
@@ -33,11 +33,11 @@ def getVScore(words):
         result[v] = sum
     return result
 
-def begin(q_dir='expqs', v_dir='tfidfs', dest='rsim', eqc=10):
+def begin(q_dir='expqs', v_dir='tfidfs', dest='rsim', eqc=10, scount=1000):
     # read information of verticals
     logging.info('q_dir: %s, v_dir: %s, dest: %s' %(q_dir, v_dir, dest))
     for fname in os.listdir(v_dir):
-        readvToDict(os.path.join(v_dir, fname))
+        readvToDict(os.path.join(v_dir, fname), scount)
     logging.info('%s verticals were read.' %len(vmap))
     # read information of expanded queries
     q_files = [q for q in os.listdir(q_dir) if q.isdigit()]
@@ -63,4 +63,7 @@ def begin(q_dir='expqs', v_dir='tfidfs', dest='rsim', eqc=10):
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
     logging.root.setLevel(level=logging.INFO)
-    begin()
+    scount = 1000
+    if len(sys.argv)==2:
+        scount = sys.argv[1]
+    begin(scount)
