@@ -63,4 +63,4 @@ def begin(q_dir='expqs', v_dir='tfidfs', dest='rsim', eqc=10):
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
     logging.root.setLevel(level=logging.INFO)
-    begin(q_dir='dir_test/expqs',v_dir='dir_test/tfidfs',dest='dir_test/rsim')
+    begin()
