@@ -1,6 +1,7 @@
 from WordGetter import WordGetter
 import codecs, os, sys
 from operator import itemgetter
+import logging
 def readvToDict(dir, vlimit):
     vmap = {}
     for fname in os.listdir(dir):
@@ -30,7 +31,8 @@ def calW2vSim(wordgetter, words, vmap):
             for key in vdict.iterkeys():
                 try:
                     score = wordgetter.similarity(word,key)
-                except KeyError:
+                except KeyError, arg:
+                    logging.warn(arg)
                     score = 0
                 sum += score
         result[v] = sum/wordslen
@@ -54,16 +56,22 @@ def save(path,content):
         f.write(content)
 
 if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
+    logging.root.setLevel(level=logging.INFO)
     model_path = 'enwiki_nltk/wiki.en.text.model'
     q_dir = 'expqs'
     v_dir = 'tfidfs'
     wordgetter = WordGetter(model_path)
     vlimit = int(sys.argv[1]) if len(sys.argv)>1 else 200
     dest = 'rsim_w2v_'+str(vlimit)
+    logging.info('q_dir: %s, v_dir: %s, dest: %s' %(q_dir, v_dir, dest))
     if not os.path.exists(dest):
         os.mkdir(dest)
+        logging.info('%s created' %dest)
     vmap = readvToDict(v_dir, vlimit)
+    logging.info('%s verticals were read.' %len(vmap))
     q_files = [file for file in os.listdir(q_dir) if file.isdigit()]
+    loggign.info('%s queries were loaded.' %len(q_files))
     for q_file in q_files:
         exp_words = getExpWords(os.path.join(q_dir,q_file))
         result = calW2vSim(wordgetter, exp_words, vmap)
