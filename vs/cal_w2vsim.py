@@ -57,9 +57,11 @@ if __name__ == '__main__':
     model_path = 'enwiki_nltk/wiki.en.text.model'
     q_dir = 'expqs'
     v_dir = 'tfidfs'
-    dest = 'rsim_w2v'
     wordgetter = WordGetter(model_path)
     vlimit = int(sys.argv[1]) if len(sys.argv)>1 else 200
+    dest = 'rsim_w2v_'+str(vlimit)
+    if not os.path.exists(dest):
+        os.mkdir(dest)
     vmap = readvToDict(v_dir, vlimit)
     q_files = [file for file in os.listdir(q_dir) if file.isdigit()]
     for q_file in q_files:
@@ -67,4 +69,4 @@ if __name__ == '__main__':
         result = calW2vSim(wordgetter, exp_words, vmap)
         sorted_r = sorted(result.items(),key=itemgetter(1),reverse=True)
         content = zip([a[0] for a in sorted_r],map(str, [a[1] for a in sorted_r]))
-        save(os.path.join(dest+'_'+str(vlimit), q_file), '\n'.join([' '.join(x) for x in content]))
+        save(os.path.join(dest, q_file), '\n'.join([' '.join(x) for x in content]))
