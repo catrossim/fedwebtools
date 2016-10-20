@@ -41,10 +41,11 @@ if __name__ == '__main__':
             query = line.split('\t')[1]
             num = line.split('\t')[0]
             words = preprocess_query(query)
-            probs = [1 for i in xrange(len(words))]
+            probs = ['1' for i in xrange(len(words))]
             simwords = zip(words, probs)
             try:
                 simwords.append(get_similar_words(words))
+                print simwords
             except KeyError, arg:
                 logging.error('KeyError: %s %s' %(arg, num))
                 continue
