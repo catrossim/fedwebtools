@@ -91,3 +91,4 @@ if __name__ == '__main__':
         sorted_r = normalize(sorted_r)
         content = zip([a[0] for a in sorted_r],map(str, [a[1] for a in sorted_r]))
         save(os.path.join(dest, q_file), '\n'.join([' '.join(x) for x in content]))
+        logging.info('%s finished.' %q_file)
