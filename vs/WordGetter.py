@@ -11,3 +11,6 @@ class WordGetter(object):
 
     def most_similar(self, words, topn=10):
         return self.model.most_similar(positive=words, topn=topn)
+
+    def similarity(self, a, b):
+        return self.model.similarity(a, b)
