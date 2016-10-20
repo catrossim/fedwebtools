@@ -13,10 +13,11 @@ def init(path):
     stopwords = StopWordHandler('stop_words.utf8')
 
 def preprocess_query(query):
+    extra_filter = ['21st','mp3']
     stemmer = stem.SnowballStemmer('english')
     query = query.replace('-',' ').strip()
     words = [stemmer.stem(x.lower()) for x in query.split(' ') \
-        if not stopwords.exist(x.lower()) and not x.isdigit()]
+        if not stopwords.exist(x.lower()) and not x.isdigit() and not in extra_filter]
     return words
 
 def get_similar_words(words):
@@ -40,8 +41,10 @@ if __name__ == '__main__':
             query = line.split('\t')[1]
             num = line.split('\t')[0]
             words = preprocess_query(query)
+            probs = [1 for i in xrange(len(words))]
+            simwords = zip(words, probs)
             try:
-                simwords = get_similar_words(words)
+                simwords.append(get_similar_words(words))
             except KeyError, arg:
                 logging.error('KeyError: %s %s' %(arg, num))
                 continue
