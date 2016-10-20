@@ -17,7 +17,7 @@ def preprocess_query(query):
     stemmer = stem.SnowballStemmer('english')
     query = query.replace('-',' ').strip()
     words = [stemmer.stem(x.lower()) for x in query.split(' ') \
-        if not stopwords.exist(x.lower()) and not x.isdigit() and not in extra_filter]
+        if not stopwords.exist(x.lower()) and not x.isdigit() and x.lower() not in extra_filter]
     return words
 
 def get_similar_words(words):
