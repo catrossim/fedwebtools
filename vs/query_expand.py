@@ -29,6 +29,8 @@ def save(path,content):
         f.write(content)
 
 if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
+    logging.root.setLevel(level=logging.INFO)
     if len(sys.argv)<4:
         print 'usage: ./query_expand.py [model_file] [query_file] [dest_dir]'
         sys.exit(1)
@@ -41,14 +43,14 @@ if __name__ == '__main__':
             query = line.split('\t')[1]
             num = line.split('\t')[0]
             words = preprocess_query(query)
-            probs = ['1' for i in xrange(len(words))]
+            probs = [1 for i in xrange(len(words))]
             simwords = zip(words, probs)
             try:
-                simwords.append(get_similar_words(words))
-                print simwords
+                simwords.extend(get_similar_words(words))
             except KeyError, arg:
                 logging.error('KeyError: %s %s' %(arg, num))
                 continue
             r = zip([a[0] for a in simwords],map(str,[a[1] for a in simwords]))
             result = '\n'.join([' '.join(x) for x in r])
             save(os.path.join(dest_dir,num), result)
+            logging.info('%s finished' %num)
