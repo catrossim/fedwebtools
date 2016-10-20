@@ -1,7 +1,7 @@
 from WordGetter import WordGetter
-import codecs, os
+import codecs, os, sys
 from operator import itemgetter
-def readvToDict(dir, scount):
+def readvToDict(dir, vlimit):
     vmap = {}
     for fname in os.listdir(dir):
         d = {}
@@ -12,7 +12,7 @@ def readvToDict(dir, scount):
                 line = line.split(' ')
                 word, prob = line
                 d[word] = dict(rank=i, prob=prob)
-                if i>=scount:
+                if i>=vlimit:
                     break
                 i += 1
                 line = f.readline()
@@ -22,6 +22,7 @@ def readvToDict(dir, scount):
 
 def calW2vSim(wordgetter, words, vmap):
     result = {}
+    wordslen = len(words)
     for v in vmap.iterkeys():
         sum = 0
         vdict = vmap[v]
@@ -32,7 +33,7 @@ def calW2vSim(wordgetter, words, vmap):
                 except KeyError:
                     score = 0
                 sum += score
-        result[v] = sum
+        result[v] = sum/wordslen
     return result
 
 def getExpWords(path, limit=10):
@@ -56,10 +57,10 @@ if __name__ == '__main__':
     model_path = 'enwiki_nltk/wiki.en.text.model'
     q_dir = 'expqs'
     v_dir = 'tfidfs'
-    dest = 'rsim'
+    dest = 'rsim_w2v'
     wordgetter = WordGetter(model_path)
-    scount = 2000
-    vmap = readvToDict(v_dir, scount)
+    vlimit = int(sys.argv[1]) if len(sys.argv)>1 else 200
+    vmap = readvToDict(v_dir, vlimit)
     q_files = [file for file in os.listdir(q_dir) if file.isdigit()]
     for q_file in q_files:
         exp_words = getExpWords(os.path.join(q_dir,q_file))
