@@ -71,7 +71,7 @@ if __name__ == '__main__':
     vmap = readvToDict(v_dir, vlimit)
     logging.info('%s verticals were read.' %len(vmap))
     q_files = [file for file in os.listdir(q_dir) if file.isdigit()]
-    loggign.info('%s queries were loaded.' %len(q_files))
+    logging.info('%s queries were loaded.' %len(q_files))
     for q_file in q_files:
         exp_words = getExpWords(os.path.join(q_dir,q_file))
         result = calW2vSim(wordgetter, exp_words, vmap)
