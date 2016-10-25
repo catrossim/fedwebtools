@@ -51,7 +51,7 @@ def cal_sim_and_save(query_path, topic_dir, output_dir):
     sorted_r = map(lambda x: (x[0],str(x[1])), sorted_r)
     save(os.path.join(output_dir,basename), '\n'.join([' '.join(x) for x in sorted_r]))
     end = time.time()
-    logger.info('{} was finished and took {}s'.format(basename, end-start))
+    logger.info('{} was finished and took {:.3f}s'.format(basename, end-start))
 
 def save(path, content):
     with open(path, 'w', 'utf-8') as f:
@@ -97,4 +97,4 @@ if __name__ == '__main__':
     p.close()
     p.join()
     end = time.time()
-    logger.info('ALL were finished and took {}s.'.format(end-start))
+    logger.info('ALL were finished and took {:.3f}s.'.format(end-start))
