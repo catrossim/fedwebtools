@@ -2,6 +2,7 @@ from codecs import open as open
 from gensim.corpora import Dictionary
 from gensim.models import LdaModel
 from multiprocessing import Pool
+from rs_utils import readfilebylines
 import logging, sys, os
 
 logger = logging.getLogger('gen_lda')
@@ -13,17 +14,11 @@ logger.addHandler(handler)
 # logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 # logging.root.setLevel(logging.INFO)
 
-def readfile(path):
-    r = []
-    with open(path, 'r', 'utf-8') as f:
-        r = f.readlines()
-    return r
-
 def tokenize(doc):
     return doc.strip().split(' ')
 
 def trainmodel(path):
-    corpus = readfile(path)
+    corpus = readfilebylines(path)
     logger.info('%s files were loaded.' %len(corpus))
     processed_docs = [tokenize(c) for c in corpus]
     word_count_dict = Dictionary(processed_docs)

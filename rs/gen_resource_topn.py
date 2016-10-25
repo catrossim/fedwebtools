@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from gensim.models import LdaModel
-from codecs import open as open
 from multiprocessing import Pool
+from rs_utils import save
 import os, sys, logging
 logger = logging.getLogger('gen_lda')
 logger.setLevel(logging.INFO)
@@ -13,10 +13,6 @@ logger.addHandler(handler)
 
 def load_model(path):
     return LdaModel.load(path)
-
-def save(path, content):
-    with open(path, 'w', 'utf-8') as f:
-        f.write(content)
 
 def get_topn_words_and_save(path, dest):
     logger.info('%s begin' %path)

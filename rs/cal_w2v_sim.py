@@ -1,18 +1,12 @@
 from WordGetter import WordGetter
 import sys, os, logging, time
-from codecs import open as open
+from rs_utils import save,readfilebylines
 logger = logging.getLogger('cal_w2v_sim')
 logger.setLevel(logging.INFO)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-
-def readfilebylines(path):
-    r = []
-    with open(path, 'r', 'utf-8') as f:
-        r = f.readlines()
-    return r
 
 def cal_by_words(wl1, wl2):
     sum = 0
@@ -52,10 +46,6 @@ def cal_sim_and_save(query_path, topic_dir, output_dir):
     save(os.path.join(output_dir,basename), '\n'.join([' '.join(x) for x in sorted_r]))
     end = time.time()
     logger.info('{} was finished and took {:.3f}s'.format(basename, end-start))
-
-def save(path, content):
-    with open(path, 'w', 'utf-8') as f:
-        f.write(content)
 
 class TestWGetter(object):
     def __init__(self, **kw):
