@@ -51,7 +51,6 @@ if __name__ == '__main__':
                 simwords.extend(get_similar_words(words))
             except KeyError, arg:
                 logging.error('KeyError: %s %s' %(arg, num))
-                continue
             r = zip([a[0] for a in simwords],map(str,[a[1] for a in simwords]))
             result = '\n'.join([' '.join(x) for x in r])
             save(os.path.join(dest_dir,num), result)
