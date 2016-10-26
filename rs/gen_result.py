@@ -25,6 +25,8 @@ if __name__ == '__main__':
     qterm_path = sys.argv[3]
     readQTerms(qterm_path)
     for file in os.listdir(src):
+        if not file.isdigit():
+            continue
         rank = 1
         f1 = False
         if findQWords(file):
