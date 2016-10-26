@@ -37,6 +37,8 @@ if __name__ == '__main__':
     path = sys.argv[1]
     query_path = sys.argv[2]
     dest_dir = sys.argv[3]
+    if not os.path.exists(dest_dir):
+        os.mkdir(dest_dir)
     init(path)
     with open(query_path, 'r') as f:
         for line in f.readlines():
