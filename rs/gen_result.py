@@ -57,6 +57,7 @@ if __name__ == '__main__':
                         runtag
                     )
                 )
+                f1 = True
                 f2 = True
                 rank += 1
             result.append(
