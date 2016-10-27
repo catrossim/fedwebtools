@@ -67,8 +67,8 @@ if __name__ == '__main__':
         print 'usage: python cal_tfsim.py <query_dir> <tf-idfs> <expq_c> <vw_c>'
         sys.exit(1)
     q_dir = sys.argv[1]
-    top_dir = sys.argv[2]
+    v_dir = sys.argv[2]
     eqc = sys.argv[3]
     scount = sys.argv[4]
     dest = 'tfsim'+'_'+eqc+'_'+scount
-    begin(q_dir=q_dir,top_dir=top_dir,dest=dest,eqc=eqc,scount=scount)
+    begin(q_dir=q_dir,v_dir=v_dir,dest=dest,eqc=eqc,scount=scount)
