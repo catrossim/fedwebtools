@@ -21,7 +21,7 @@ def preprocess_query(query):
     return words
 
 def get_similar_words(words):
-    return wordgetter.most_similar(words)
+    return wordgetter.most_similar(words,50)
 
 def save(path,content):
     import codecs

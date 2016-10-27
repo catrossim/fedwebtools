@@ -64,7 +64,7 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
     logging.root.setLevel(level=logging.INFO)
     if len(sys.argv) != 5:
-        print 'usage python cal_tfsim.py <query_dir> <tf-idfs> <expq_c> <vw_c>'
+        print 'usage: python cal_tfsim.py <query_dir> <tf-idfs> <expq_c> <vw_c>'
         sys.exit(1)
     q_dir = sys.argv[1]
     top_dir = sys.argv[2]
