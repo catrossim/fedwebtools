@@ -71,4 +71,6 @@ if __name__ == '__main__':
     eqc = sys.argv[3]
     scount = sys.argv[4]
     dest = 'tfsim'+'_'+eqc+'_'+scount
+    if not os.path.exists(dest):
+        os.mkdir(dest)
     begin(q_dir=q_dir,v_dir=v_dir,dest=dest,eqc=eqc,scount=scount)
