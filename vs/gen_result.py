@@ -24,6 +24,7 @@ if __name__ == '__main__':
     logging.root.setLevel(level=logging.INFO)
     if len(sys.argv)<4:
         print 'usage: python genresult.py <src> <runtag> <esp>'
+        sys.exit(1)
     source = sys.argv[1]
     dest = sys.argv[2]
     esp = float(sys.argv[3])
