@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-import codecs,os
+import codecs,os,sys
 import logging
 GENERAL_SRC = 'v001'
 QUESTION_WORDS = ['who','why','what','when','how','where']
