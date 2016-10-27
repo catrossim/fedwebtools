@@ -50,7 +50,7 @@ if __name__ == '__main__':
                     count += 1
             if not count:
                 logging.info('%s has no suitable topics. Send it to GENERAL' %fname)
-                output.append(FORMAT_STR.format(fname,GENERAL_SRC,dest))
+                output.append(FORMAT_STR.format(fname,'FW14-'+GENERAL_SRC,dest))
                 count += 1
     with codecs.open(dest, 'w', 'utf-8') as f:
         f.write('\n'.join(output))
