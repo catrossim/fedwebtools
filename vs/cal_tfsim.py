@@ -33,7 +33,7 @@ def getVScore(words):
         result[v] = sum
     return result
 
-def begin(q_dir, v_dir='tfidfs', dest, eqc, scount):
+def begin(q_dir, v_dir, dest, eqc, scount):
     # read information of verticals
     logging.info('q_dir: %s, v_dir: %s, dest: %s' %(q_dir, v_dir, dest))
     for fname in os.listdir(v_dir):
@@ -63,11 +63,12 @@ def begin(q_dir, v_dir='tfidfs', dest, eqc, scount):
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
     logging.root.setLevel(level=logging.INFO)
-    if len(sys.argv) != 4:
-        print 'usage python cal_tfsim.py <query_dir> <expq_c> <vw_c>'
+    if len(sys.argv) != 5:
+        print 'usage python cal_tfsim.py <query_dir> <tf-idfs> <expq_c> <vw_c>'
         sys.exit(1)
     q_dir = sys.argv[1]
-    eqc = sys.argv[2]
-    scount = sys.argv[3]
+    top_dir = sys.argv[2]
+    eqc = sys.argv[3]
+    scount = sys.argv[4]
     dest = 'tfsim'+'_'+eqc+'_'+scount
-    begin(q_dir=q_dir,dest=dest,eqc=eqc,scount=scount)
+    begin(q_dir=q_dir,top_dir=top_dir,dest=dest,eqc=eqc,scount=scount)
