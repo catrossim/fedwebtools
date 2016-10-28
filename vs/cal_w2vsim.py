@@ -65,14 +65,22 @@ def normalize(scores):
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s: %(levelname)s: %(message)s')
     logging.root.setLevel(level=logging.INFO)
-
-    model_path = 'enwiki_nltk/wiki.en.text.model'
-    q_dir = 'expqs'
-    v_dir = 'tfidfs'
+    if len(sys.argv)<6:
+        print 'usage: python cal_w2vsim.py <model> <query> <verticals> <wl> <vl>'
+    model_path = sys.argv[1]
+    q_dir = sys.argv[2]
+    v_dir = sys.argv[3]
+    wlimit = sys.argv[4]
+    vlimit = sys.argv[5]
     wordgetter = WordGetter(model_path)
-    vlimit = int(sys.argv[1]) if len(sys.argv)>1 else 200
-    dest = 'rsim_w2v_'+str(vlimit)
-    logging.info('q_dir: %s, v_dir: %s, dest: %s' %(q_dir, v_dir, dest))
+    dest = '{}_{}_{}'.format('w2vsim',wlimit,vlimit)
+    logging.info('q_dir:{}, v_dir:{}, dest:{}, wlimit:{}, vlimit:{}'.format(
+            q_dir,
+            v_dir,
+            dest,
+            wlimit,
+            vlimit
+        ))
 
     if not os.path.exists(dest):
         os.mkdir(dest)
@@ -85,7 +93,7 @@ if __name__ == '__main__':
     logging.info('%s queries were loaded.' %len(q_files))
 
     for q_file in q_files:
-        exp_words = getExpWords(os.path.join(q_dir,q_file))
+        exp_words = getExpWords(os.path.join(q_dir,q_file),wlimit)
         result = calW2vSim(wordgetter, exp_words, vmap)
         sorted_r = sorted(result.items(),key=itemgetter(1),reverse=True)
         sorted_r = normalize(sorted_r)
