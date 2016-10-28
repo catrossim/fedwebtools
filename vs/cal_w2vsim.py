@@ -21,7 +21,7 @@ def readvToDict(dir, vlimit):
         vmap[v] = d
     return vmap
 
-def calW2vSim(wordgetter, words, vmap):
+def calW2vSim(wordgetter, words, vmap, handler):
     result = {}
     wordslen = len(words)
     for v in vmap.iterkeys():
@@ -33,9 +33,15 @@ def calW2vSim(wordgetter, words, vmap):
                     score = wordgetter.similarity(word,key)
                 except KeyError:
                     score = 0
-                sum += score
+                sum = handler(sum,score)
         result[v] = sum/wordslen
     return result
+
+def sum(a,b):
+    return a+b
+
+def findmax(a,b):
+    return max(a,b)
 
 def getExpWords(path, limit=10):
     exp_words = []
@@ -95,9 +101,9 @@ if __name__ == '__main__':
 
     for q_file in q_files:
         exp_words = getExpWords(os.path.join(q_dir,q_file),wlimit)
-        result = calW2vSim(wordgetter, exp_words, vmap)
+        result = calW2vSim(wordgetter, exp_words, vmap, findmax)
         sorted_r = sorted(result.items(),key=itemgetter(1),reverse=True)
-        sorted_r = normalize(sorted_r)
+        # sorted_r = normalize(sorted_r)
         content = zip([a[0] for a in sorted_r],map(str, [a[1] for a in sorted_r]))
         save(os.path.join(dest, q_file), '\n'.join([' '.join(x) for x in content]))
         logging.info('%s finished.' %q_file)
