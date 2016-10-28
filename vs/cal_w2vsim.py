@@ -67,11 +67,12 @@ if __name__ == '__main__':
     logging.root.setLevel(level=logging.INFO)
     if len(sys.argv)<6:
         print 'usage: python cal_w2vsim.py <model> <query> <verticals> <wl> <vl>'
+        sys.exit(1)
     model_path = sys.argv[1]
     q_dir = sys.argv[2]
     v_dir = sys.argv[3]
-    wlimit = sys.argv[4]
-    vlimit = sys.argv[5]
+    wlimit = int(sys.argv[4])
+    vlimit = int(sys.argv[5])
     wordgetter = WordGetter(model_path)
     dest = '{}_{}_{}'.format('w2vsim',wlimit,vlimit)
     logging.info('q_dir:{}, v_dir:{}, dest:{}, wlimit:{}, vlimit:{}'.format(
