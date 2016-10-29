@@ -35,7 +35,7 @@ def cal_sim(query_file, topic_dir, qemapper):
             tws = [line.split(' ')[0] for line in readfilebylines(os.path.join(topic_dir,dir,file))]
             score = cal_by_words(qs, tws)
             sum += score
-        if dir in qemapper[base]:
+        if qemapper[base].has_key(file):
             vscore = 1.7
         result[dir] = vscore + sum
     return result
@@ -67,7 +67,13 @@ def read_mapper(evpath, qvpath):
             qemap[token[0]] = [x for x in vemap[token[1]]]
         else:
             qemap[token[0]].extend([x for x in vemap[token[1]]])
-    return qemap
+    qedict = {}
+    for x in qemap.iterkeys():
+        d = {}
+        for y in qemap[x]:
+            d[y] = True
+        qedict[x] = d
+    return qedict
 
 class TestWGetter(object):
     def __init__(self, **kw):
@@ -89,8 +95,8 @@ if __name__ == '__main__':
             model_file, query_dir, topic_dir, output_dir
         ))
     global wgetter
-    # wgetter = WordGetter(model_file)
-    wgetter = TestWGetter()
+    wgetter = WordGetter(model_file)
+    # wgetter = TestWGetter()
     result = {}
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
