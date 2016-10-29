@@ -22,7 +22,7 @@ def cal_by_words(wl1, wl2):
     return sum
 
 # 7011 vs topn
-def cal_sim(query_file, topic_dir):
+def cal_sim(query_file, topic_dir, qemapper):
     base = os.path.basename(query_file)
     qs = [line.split(' ')[0] for line in readfilebylines(query_file)]
     result = {}
@@ -30,22 +30,44 @@ def cal_sim(query_file, topic_dir):
     for dir in os.listdir(topic_dir):
         # 0 in e001
         sum = 0
+        vscore = 0
         for file in os.listdir(os.path.join(topic_dir,dir)):
             tws = [line.split(' ')[0] for line in readfilebylines(os.path.join(topic_dir,dir,file))]
             score = cal_by_words(qs, tws)
             sum += score
-        result[dir] = sum
+        if dir in qemapper[base]:
+            vscore = 1.7
+        result[dir] = vscore + sum
     return result
 
-def cal_sim_and_save(query_path, topic_dir, output_dir):
+def cal_sim_and_save(query_path, topic_dir, output_dir, mapper):
     start = time.time()
-    result = cal_sim(query_path, topic_dir)
+    result = cal_sim(query_path, topic_dir, mapper)
     basename = os.path.basename(query_path)
     sorted_r = sorted(result.items(), key=lambda x:-1*x[1])
     sorted_r = map(lambda x: (x[0],str(x[1])), sorted_r)
     save(os.path.join(output_dir,basename), '\n'.join([' '.join(x) for x in sorted_r]))
     end = time.time()
     logger.info('{} was finished and took {:.3f}s'.format(basename, end-start))
+
+def read_mapper(evpath, qvpath):
+    evlines = readfilebylines(evpath)
+    qvlines = readfilebylines(qvpath)
+    vemap = {}
+    qemap = {}
+    for evline in evlines:
+        token = evline.strip().split(' ')
+        if not vemap.get(token[1], None):
+            vemap[token[1]] = [token[0]]
+        else:
+            vemap[token[1]].append(token[0])
+    for qvline in qvlines:
+        token = qvline.strip().split(' ')
+        if not qemap.get(token[0], None):
+            qemap[token[0]] = [x for x in vemap[token[1]]]
+        else:
+            qemap[token[0]].extend([x for x in vemap[token[1]]])
+    return qemap
 
 class TestWGetter(object):
     def __init__(self, **kw):
@@ -69,9 +91,10 @@ if __name__ == '__main__':
     result = {}
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
+    qemapper = read_mapper('ev-mapping.txt', 'qv-mapping.txt')
     start = time.time()
     # for query_file in os.listdir(query_dir):
-    #     r = cal_sim_and_save(os.path.join(query_dir,query_file), topic_dir, output_dir)
+    #     r = cal_sim_and_save(os.path.join(query_dir,query_file), topic_dir, output_dir, qemapper)
 
     from multiprocessing import Pool
     p = Pool()
@@ -81,7 +104,8 @@ if __name__ == '__main__':
             args=(
                 os.path.join(query_dir,query_file),
                 topic_dir,
-                output_dir
+                output_dir,
+                qemapper
                 )
             )
     p.close()
