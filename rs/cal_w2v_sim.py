@@ -79,6 +79,7 @@ class TestWGetter(object):
 if __name__ == '__main__':
     if len(sys.argv)<5:
         print 'usage: python cal_w2v_sim.py <model> <query> <topic> <output>'
+        sys.exit(1)
     model_file = sys.argv[1]
     query_dir = sys.argv[2]
     topic_dir = sys.argv[3]
