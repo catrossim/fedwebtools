@@ -77,6 +77,8 @@ class TestWGetter(object):
         return 1.0
 
 if __name__ == '__main__':
+    if len(sys.argv)<5:
+        print 'usage: python cal_w2v_sim.py <model> <query> <topic> <output>'
     model_file = sys.argv[1]
     query_dir = sys.argv[2]
     topic_dir = sys.argv[3]
@@ -91,7 +93,6 @@ if __name__ == '__main__':
     result = {}
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
-        sys.exit(1)
     qemapper = read_mapper('ev-mapping.txt', 'qv-mapping.txt')
     start = time.time()
     # for query_file in os.listdir(query_dir):
