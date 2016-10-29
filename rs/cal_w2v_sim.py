@@ -91,6 +91,7 @@ if __name__ == '__main__':
     result = {}
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
+        sys.exit(1)
     qemapper = read_mapper('ev-mapping.txt', 'qv-mapping.txt')
     start = time.time()
     # for query_file in os.listdir(query_dir):
