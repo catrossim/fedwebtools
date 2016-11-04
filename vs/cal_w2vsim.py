@@ -93,6 +93,7 @@ if __name__ == '__main__':
         os.mkdir(dest)
         logging.info('%s created' %dest)
 
+    # read the words of verticals
     vmap = readvToDict(v_dir, vlimit)
     logging.info('%s verticals were read.' %len(vmap))
 
