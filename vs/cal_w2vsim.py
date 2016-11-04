@@ -23,7 +23,6 @@ def readvToDict(dir, vlimit):
 
 def calW2vSim(wordgetter, words, vmap, handler):
     result = {}
-    wordslen = len(words)
     for v in vmap.iterkeys():
         sum = 0
         vdict = vmap[v]
@@ -34,7 +33,7 @@ def calW2vSim(wordgetter, words, vmap, handler):
                 except KeyError:
                     score = 0
                 sum = handler(sum,score)
-        result[v] = sum/wordslen
+        result[v] = sum
     return result
 
 def sum(a,b):
@@ -51,7 +50,7 @@ def getExpWords(path, limit=10):
         while line:
             exp_words.append(line.split(' ')[0])
             wcount += 1
-            if wcount>limit:
+            if wcount>=limit:
                 break
             line = f.readline()
     return exp_words
@@ -96,12 +95,14 @@ if __name__ == '__main__':
     # read the words of verticals
     vmap = readvToDict(v_dir, vlimit)
     logging.info('%s verticals were read.' %len(vmap))
-
+    # read the list of query file, one file represents one query.
     q_files = [file for file in os.listdir(q_dir) if file.isdigit()]
     logging.info('%s queries were loaded.' %len(q_files))
 
     for q_file in q_files:
+        # read the words of an expanded query
         exp_words = getExpWords(os.path.join(q_dir,q_file),wlimit)
+        # get the similarity between expanded words and vertival description
         result = calW2vSim(wordgetter, exp_words, vmap, findmax)
         sorted_r = sorted(result.items(),key=itemgetter(1),reverse=True)
         # sorted_r = normalize(sorted_r)
