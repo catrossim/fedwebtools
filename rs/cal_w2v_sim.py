@@ -95,8 +95,8 @@ if __name__ == '__main__':
             model_file, query_dir, topic_dir, output_dir
         ))
     global wgetter
-    wgetter = WordGetter(model_file)
-    # wgetter = TestWGetter()
+    # wgetter = WordGetter(model_file)
+    wgetter = TestWGetter()
     result = {}
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
