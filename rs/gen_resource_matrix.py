@@ -54,7 +54,7 @@ if __name__ == '__main__':
                 lda_model,
                 corpus,
                 wc_dict,
-                os.path.join(output,rname)
+                os.path.join(output_dir, rname)
             )
         )
     p.close()
