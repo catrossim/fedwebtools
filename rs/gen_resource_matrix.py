@@ -29,13 +29,20 @@ def gen_resource_matrix_and_save(model, corpus, wc_dict, output):
     np.save(output, rmatrix)
 
 if __name__ == '__main__':
+    if len(sys.argv)<4:
+        print 'usage: python gen_resource_matrix.py <corpus_dir> <model_dir> \
+            <output_dir>'
+        sys.exit(1)
     corpus_dir = sys.argv[1]
     model_dir = sys.argv[2]
     output_dir = sys.argv[3]
     import os
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
+
     from multiprocessing import Pool
     p = Pool()
-    for r_name in os.listdir(model_dir):
+    for rname in os.listdir(model_dir):
         c_target = os.path.join(corpus_dir, rname)
         m_target = os.path.join(model_dir, rname, rname)
         corpus = [tokenize(c) for c in readfilebylines(c_target)]
