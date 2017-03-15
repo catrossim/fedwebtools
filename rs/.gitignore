@@ -1,3 +1,5 @@
 *test.py
 resource/
 *.pyc
+*.ipynb
+.ipynb_checkpoints/
