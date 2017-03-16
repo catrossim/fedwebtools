@@ -18,8 +18,9 @@ def gen_resource_matrix(model, corpus, wc_dict):
     rsum = {}
     for k,v in result.iteritems():
         rsum[k] = np.array(v).mean()
-    x = np.array(rsum.values()).reshape(-1,1)
-    return StandardScaler().fit_transform(x).reshape(1,-1)
+    # x = np.array(rsum.values()).reshape(-1,1)
+    # return StandardScaler().fit_transform(x).reshape(1,-1)
+    return np.array(rsum.values())
 
 def tokenize(text):
     return text.strip().split(' ')
