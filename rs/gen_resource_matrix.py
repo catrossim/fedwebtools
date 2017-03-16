@@ -9,12 +9,18 @@ from timeit import Timer
 def gen_resource_matrix(model, corpus, wc_dict):
     result = {}
     for doc in corpus:
-        r = model.get_document_topics(wc_dict.doc2bow(doc))
+        r = model.get_document_topics(
+            wc_dict.doc2bow(doc),
+            minimum_probability=0.5
+        )
         for t in r:
             if result.get(t[0],None):
                 result[t[0]].append(t[1])
             else:
                 result[t[0]] = [t[1]]
+    for i in xrange(50):
+        if not result.get(i, None):
+            result[i] = [0.0]
     rsum = {}
     for k,v in result.iteritems():
         rsum[k] = np.array(v).mean()
@@ -31,8 +37,8 @@ def gen_resource_matrix_and_save(model, corpus, wc_dict, output):
 
 if __name__ == '__main__':
     if len(sys.argv)<4:
-        print 'usage: python gen_resource_matrix.py <corpus_dir> <model_dir> \
-            <output_dir>'
+        print 'usage: python gen_resource_matrix.py <corpus_dir> <model_dir> '+\
+            ' <output_dir>'
         sys.exit(1)
     corpus_dir = sys.argv[1]
     model_dir = sys.argv[2]
