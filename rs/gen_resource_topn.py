@@ -5,7 +5,7 @@ from multiprocessing import Pool
 from rs_utils import save
 import os, sys, logging
 logger = logging.getLogger('gen_resource_topn')
-logger.setLevel(logging.ERROR)
+logger.setLevel(logging.INFO)
 handler = logging.StreamHandler()
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
@@ -40,6 +40,6 @@ if __name__ == '__main__':
     p = Pool()
     for d in os.listdir(src):
         if d.startswith('e'):
-            p.apply_async(get_topn_words_and_save, args=(os.path.join(src,d), dest, n))
+            p.apply_async(get_topn_words_and_save, args=(os.path.join(src,d), dest, int(n)))
     p.close()
     p.join()
