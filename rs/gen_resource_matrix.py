@@ -8,6 +8,7 @@ from timeit import Timer
 
 def gen_resource_matrix(model, corpus, wc_dict):
     result = {}
+    count = {}
     for doc in corpus:
         r = model.get_document_topics(
             wc_dict.doc2bow(doc),
@@ -15,18 +16,21 @@ def gen_resource_matrix(model, corpus, wc_dict):
         )
         for t in r:
             if result.get(t[0],None):
-                result[t[0]].append(t[1])
+                result[t[0]] += t[1]
+                count[t[0]] += 1
             else:
-                result[t[0]] = [t[1]]
+                result[t[0]] = t[1]
+                count[t[0]] = 1
     for i in xrange(model.num_topics):
         if not result.get(i, None):
-            result[i] = [0.0]
+            result[i] = 0.0
+            count[i] = 1
     rsum = {}
     for k,v in result.iteritems():
-        rsum[k] = np.array(v).mean()
-    # x = np.array(rsum.values()).reshape(-1,1)
-    # return StandardScaler().fit_transform(x).reshape(1,-1)
-    return np.array(rsum.values())
+        rsum[k] = result[k]/count[k]
+    x = np.array(rsum.values()).reshape(-1,1)
+    return StandardScaler().fit_transform(x).reshape(1,-1)
+    # return np.array(rsum.values())
 
 def tokenize(text):
     return text.strip().split(' ')
