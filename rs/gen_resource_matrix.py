@@ -18,7 +18,7 @@ def gen_resource_matrix(model, corpus, wc_dict):
                 result[t[0]].append(t[1])
             else:
                 result[t[0]] = [t[1]]
-    for i in xrange(50):
+    for i in xrange(model.num_topics):
         if not result.get(i, None):
             result[i] = [0.0]
     rsum = {}
