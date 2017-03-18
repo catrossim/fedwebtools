@@ -23,14 +23,14 @@ def trainmodel(path):
     processed_docs = [tokenize(c) for c in corpus]
     word_count_dict = Dictionary(processed_docs)
     logger.info('%s words in origin.' %len(word_count_dict))
-    word_count_dict.filter_extremes(no_below=5, no_above=0.1)
+    # word_count_dict.filter_extremes(no_below=5, no_above=0.1)
     logger.info('%s words remained after filetering.' %len(word_count_dict))
     bag_of_words_corpus = [word_count_dict.doc2bow(pdoc) for pdoc in processed_docs]
     lda_model = LdaModel(
         corpus=bag_of_words_corpus,
         id2word=word_count_dict,
         passes=5,
-        num_topics=30)
+        num_topics=50)
     return lda_model, word_count_dict
 
 def trainmodel_and_save(src, dest, fname):
