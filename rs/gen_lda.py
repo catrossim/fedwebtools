@@ -30,7 +30,7 @@ def trainmodel(path):
         corpus=bag_of_words_corpus,
         id2word=word_count_dict,
         passes=5,
-        num_topics=50)
+        num_topics=8)
     return lda_model, word_count_dict
 
 def trainmodel_and_save(src, dest, fname):
