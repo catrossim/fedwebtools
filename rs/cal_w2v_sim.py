@@ -28,7 +28,7 @@ def cal_sim(query_file, topic_dir, qemapper):
     qnum = 5
     base = os.path.basename(query_file)
     qs = [line.split(' ')[0] for line in readfilebylines(query_file)]
-    if len(qs)>=qnum：
+    if len(qs)>=qnum:
         qs = qs[:qnum]
     result = {}
     # e001 in topn
