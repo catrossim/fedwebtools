@@ -23,8 +23,13 @@ def cal_by_words(wl1, wl2):
 
 # 7011 vs topn
 def cal_sim(query_file, topic_dir, qemapper):
+    alpha = 0.7
+    beta = 0.8
+    qnum = 5
     base = os.path.basename(query_file)
     qs = [line.split(' ')[0] for line in readfilebylines(query_file)]
+    if len(qs)>=qnum：
+        qs = qs[:qnum]
     result = {}
     # e001 in topn
     for dir in os.listdir(topic_dir):
@@ -37,7 +42,7 @@ def cal_sim(query_file, topic_dir, qemapper):
             sum += score
         if qemapper[base].has_key(file):
             vscore = 1.7
-        result[dir] = vscore + sum
+        result[dir] = alpha*vscore + beta*sum
     return result
 
 def cal_sim_and_save(query_path, topic_dir, output_dir, mapper):
