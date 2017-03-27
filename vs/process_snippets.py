@@ -70,7 +70,7 @@ def tokenize(post):
     import string
     from StopWordHandler import StopWordHandler
     stopwords = StopWordHandler('stop_words.utf8')
-    post = post.replace(u'\u2014',' ').replace(u'\u2013',' ').replace(u'\xb7','').replace(u:'\u2022','')
+    post = post.replace(u'\u2014',' ').replace(u'\u2013',' ').replace(u'\xb7','').replace(u'\u2022','')
     if isinstance(post, unicode):
         post = str(post)
     # 转化为小写
