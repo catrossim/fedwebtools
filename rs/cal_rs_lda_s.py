@@ -35,19 +35,22 @@ def init_models(mdir, rmat_dir):
     return rlist, models, wordmap, rmatrixes
 
 def cal_sim(qmat, rmat):
-    from numpy import linalg
-    from math import exp
-    qmat = np.mat(qmat)
-    rmat = np.mat(rmat)
-    num = float(qmat*rmat.T)
-    denom = linalg.norm(qmat)*linalg.norm(rmat)
-    if denom < 1e-6:
-        return -1
-    return num/denom
+    from scipy.stats import entropy
+    # KL-Divewrgence
+    return entropy(qmat.tolist(),rmat.tolist())
+    # from numpy import linalg
+    # from math import exp
+    # qmat = np.mat(qmat)
+    # rmat = np.mat(rmat)
+    # num = float(qmat*rmat.T)
+    # denom = linalg.norm(qmat)*linalg.norm(rmat)
+    # if denom < 1e-6:
+    #     return -1
+    # return num/denom
 
 if __name__ == '__main__':
     if len(sys.argv)<6:
-        print 'usage: python rs_lda_s.py <query_dir> <lda_models_dir>'+\
+        print 'usage: python cal_rs_lda_s.py <query_dir> <lda_models_dir>'+\
         ' <rmatrix_dir> <output_dir> <filename>'
         sys.exit(1)
     qdir = sys.argv[1]
