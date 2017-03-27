@@ -70,7 +70,7 @@ def tokenize(post):
     import string
     from StopWordHandler import StopWordHandler
     stopwords = StopWordHandler('stop_words.utf8')
-    post = post.replace(u'\u2014',' ').replace(u'\u2013',' ').replace(u'\xb7',' ').replace(u'\u2022',' ')
+    post = post.replace(u'\u2026',' ').replace(u'\u2014',' ').replace(u'\u2013',' ').replace(u'\xb7',' ').replace(u'\u2022',' ')
     if isinstance(post, unicode):
         post = str(post)
     # 转化为小写
@@ -81,7 +81,7 @@ def tokenize(post):
     tokens = word_tokenize(no_punctuation)
     # 词干提取
     stemmer = stem.SnowballStemmer('english')
-    stem_tokens = [stemmer.stem(x) for x in tokens if  not stopwords.exist(x) \
+    stem_tokens = [stemmer.stem(x.strip()) for x in tokens if  not stopwords.exist(x) \
         and not x.isdigit() and not x==' ' and not x=='']
     return stem_tokens
 
