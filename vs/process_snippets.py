@@ -82,8 +82,8 @@ def tokenize(post):
     # 词干提取
     stemmer = stem.SnowballStemmer('english')
     stem_tokens = [stemmer.stem(x) for x in tokens if  not stopwords.exist(x) \
-        and not x.isdigit() and not x==' ' and not x=='']
-    return stem_tokens
+        and not x.isdigit()]
+    return filter(lambda x:x!='' and x!=' ',stem_tokens)
 
 def saveResult(destDir, fileName, content):
     if not os.path.exists(destDir):
