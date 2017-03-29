@@ -1,5 +1,5 @@
 #!/bin/bash
-from rs_utils import readfilebylines
+from rs_utils import readfilebylines, save
 import os,sys
 from scipy.stats import entropy
 import numpy as np
