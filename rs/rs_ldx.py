@@ -2,22 +2,22 @@
 from rs_utils import readfilebylines
 import os,sys
 from scipy.stats import entropy
+import numpy as np
 def cal_sim(qmat, rmat):
     return entropy(qmat, rmat)
 
 import pandas as pd
 if __name__ == '__main__':
-    if len(sys.argv)<7:
-        print 'usage: python %s <qorigin> <qmat_dir> <lda_dir> <rmat_dir> <dest> <runID>'%sys.argv[0]
+    if len(sys.argv)<6:
+        print 'usage: python %s <qorigin> <qmat_dir> <rmat_dir> <dest> <runID>'%sys.argv[0]
         sys.exit()
     qsequence = {}
     count = 0
     qorigin = sys.argv[1]
     qmat_dir = sys.argv[2]
-    lda_dir = sys.argv[3]
-    rmat_dir = sys.argv[4]
-    dest = sys.argv[5]
-    runID = sys.argv[6]
+    rmat_dir = sys.argv[3]
+    dest = sys.argv[4]
+    runID = sys.argv[5]
     for qname in os.listdir(qorigin):
         qsequence[count] = qname
         count += 1
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     for e in os.listdir(qmat_dir):
         s = pd.read_csv(
             os.path.join(
-                lda_dir,
+                qmat_dir,
                 e,
                 'expqs_google_inf.model-final.theta'
             ),
