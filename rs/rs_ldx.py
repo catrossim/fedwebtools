@@ -36,15 +36,17 @@ if __name__ == '__main__':
     rmats = {}
     for r in os.listdir(rmat_dir):
         rmat = np.load(os.path.join(rmat_dir,r,r+'.npy'))
-        print r
         rmats[r] = rmat
     result = {}
     for k,v in qsequence.iteritems():
         qresult = {}
         for qk,qv in qmats.iteritems():
             qmat = qv.iloc[k].tolist()
-            rmat = rmats[qk][0].tolist()
+            rmat = rmats[qk].tolist()
             score = cal_sim(qmat,rmat)
+            if score!=score:
+                score = 0.0
+            print score
             qresult[qk] = score
         result[k] = qresult
 #     print result
@@ -57,4 +59,4 @@ if __name__ == '__main__':
         for ek,ev in sorted_e:
             out_result.append(out_seq%(q, ek, rank, ev, runID))
             rank += 1
-    save(os.path.join('resource',runID),'\n'.join(out_result))
+    save(os.path.join(dest,runID),'\n'.join(out_result))
