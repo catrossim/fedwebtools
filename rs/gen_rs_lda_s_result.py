@@ -13,7 +13,7 @@ def gen_result(src, dest):
     npy_file = np.load(src)
     rdict = npy_file.item()
     reform = {(outkey, inkey): [values] for outkey, innerDict in rdict.iteritems() for inkey, values in innerDict.iteritems()}
-    result = pd.DataFrame(reform).T
+    result = pd.DataFrame(reform).T.replace(np.inf,0)
     rtemp = result.reset_index()
     rtemp.rename(columns={0:'score', 'level_0':'q','level_1':'e'},inplace=True)
     rgroup = rtemp.groupby('q')['score']
