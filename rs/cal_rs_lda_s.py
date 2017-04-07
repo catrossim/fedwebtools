@@ -65,6 +65,7 @@ if __name__ == '__main__':
     result = {}
     for qfile in os.listdir(qdir):
         qs = [line.split(' ')[0] for line in readfilebylines(os.path.join(qdir, qfile))]
+        qs = qs[:30]
         qresult = {}
         for r in rlist:
             qmatrix = get_query_matrix(qs, models[r], wordmap[r])
