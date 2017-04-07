@@ -47,15 +47,11 @@ def _handleFile(path):
     # print soup.prettify().encode('utf-8')
     results = []
     for snippet in soup:
-        title = None
         description = None
         if snippet.description and snippet.description.string:
             description = snippet.description.string
-        if description is None and snippet.title and snippet.title.string:
-            title = snippet.title.string
-
-        tokens = _tokenizeAll(title, description)
-        results.append(' '.join(tokens))
+            tokens = _tokenizeAll(description)
+            results.append(' '.join(tokens))
     return results
 
 def _tokenizeAll(*posts):
